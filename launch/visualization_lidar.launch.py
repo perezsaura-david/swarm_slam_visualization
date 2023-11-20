@@ -22,10 +22,17 @@ def launch_setup(context, *args, **kwargs):
             name='rviz2',
             arguments=['-d', LaunchConfiguration('rviz_config').perform(context)],
         )
+    rviz_node1 = Node(package='rviz2',
+            namespace='',
+            executable='rviz2',
+            name='rviz2',
+            arguments=['-d', LaunchConfiguration('rviz_config1').perform(context)],
+        )
     
     return [
         visualization_node,
         rviz_node,
+        rviz_node1,
     ]
 
 
@@ -41,7 +48,10 @@ def generate_launch_description():
                               default_value='lidar.yaml',
                               description=''),
         DeclareLaunchArgument('rviz_config_file',
-                              default_value='lidar.rviz',
+                              default_value='lidar_r0.rviz',
+                              description=''),
+        DeclareLaunchArgument('rviz_config_file1',
+                              default_value='lidar_r1.rviz',
                               description=''),
         DeclareLaunchArgument('config',
                               default_value=[
@@ -53,6 +63,12 @@ def generate_launch_description():
                               default_value=[
                                   LaunchConfiguration('config_path'),
                                   LaunchConfiguration('rviz_config_file')
+                              ],
+                              description=''),
+        DeclareLaunchArgument('rviz_config1',
+                              default_value=[
+                                  LaunchConfiguration('config_path'),
+                                  LaunchConfiguration('rviz_config_file1')
                               ],
                               description=''),
         OpaqueFunction(function=launch_setup)
